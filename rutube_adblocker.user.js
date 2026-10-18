@@ -26,6 +26,21 @@
       configurable: false
     });
     window.__IS_ADBLOCK__ = false;
+
+    window.Ya = window.Ya || {};
+    window.Ya.Metrika2 = window.Ya.Metrika2 || function () {
+      return {
+        reachGoal: function () {},
+        params: function () {},
+        extLink: function () {},
+        file: function () {},
+        hit: function () {},
+        notBounce: function () {}
+      };
+    };
+    if (typeof window.ym === 'undefined') {
+      window.ym = function () {};
+    }
   } catch (e) {}
 
   function cleanPlayOptions(data) {
@@ -106,7 +121,8 @@
       url.includes('playoptions.rutube.ru/adfoxsdk') ||
       url.includes('a.rutube.ru/api/v1/ad') ||
       url.includes('ssp.rutube.ru') ||
-      url.includes('/api/advert/')
+      url.includes('/api/advert/') ||
+      url.includes('vigo.tech')
     )) {
       const isXml = url.includes('xml') || url.includes('vast');
       return Promise.resolve(new Response(
@@ -115,7 +131,17 @@
       ));
     }
 
-    return originalFetch.apply(this, args);
+    try {
+      return await originalFetch.apply(this, args);
+    } catch (err) {
+      if (typeof url === 'string' && (url.includes('goya') || url.includes('stat') || url.includes('counter') || url.includes('yandex') || url.includes('vigo'))) {
+        return new Response(JSON.stringify({ status: 'ok' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      throw err;
+    }
   };
 
   const originalXhrOpen = XMLHttpRequest.prototype.open;
@@ -133,7 +159,8 @@
       url.includes('playoptions.rutube.ru/adfoxsdk') ||
       url.includes('a.rutube.ru/api/v1/ad') ||
       url.includes('ssp.rutube.ru') ||
-      url.includes('/api/advert/')
+      url.includes('/api/advert/') ||
+      url.includes('vigo.tech')
     )) {
       Object.defineProperty(this, 'readyState', { value: 4, writable: false });
       Object.defineProperty(this, 'status', { value: 200, writable: false });

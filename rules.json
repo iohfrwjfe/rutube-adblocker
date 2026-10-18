@@ -78,32 +78,13 @@
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
-      "urlFilter": "||tns-counter.ru^",
-      "initiatorDomains": ["rutube.ru"],
-      "resourceTypes": ["xmlhttprequest", "script", "image", "other"]
-    }
-  },
-  {
-    "id": 10,
-    "priority": 1,
-    "action": { "type": "block" },
-    "condition": {
-      "urlFilter": "||goya.rutube.ru^",
-      "resourceTypes": ["xmlhttprequest", "script", "image", "other"]
-    }
-  },
-  {
-    "id": 11,
-    "priority": 1,
-    "action": { "type": "block" },
-    "condition": {
       "urlFilter": "||vcdn.biz^",
       "initiatorDomains": ["rutube.ru"],
       "resourceTypes": ["xmlhttprequest", "script", "other"]
     }
   },
   {
-    "id": 12,
+    "id": 10,
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
