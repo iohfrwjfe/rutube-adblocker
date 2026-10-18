@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rutube AdBlocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="shield-badge">
+          <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shieldGrad)" stroke="none"/>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="shieldGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00A1E7"/>
+                <stop offset="1" stop-color="#0051C6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="app-title">Rutube AdBlocker</h1>
+          <p class="app-subtitle">Без рекламы и пауз</p>
+        </div>
+      </div>
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot"></span>
+        <span class="status-label" id="statusLabel">Активен</span>
+      </div>
+    </header>
+
+    <div class="toggle-card">
+      <div class="toggle-info">
+        <span class="toggle-title">Блокировка рекламы</span>
+        <span class="toggle-desc" id="toggleDesc">Прероллы, мидроллы и баннеры отключены</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="mainToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="stats-section">
+      <h2 class="section-title">Заблокировано за всё время</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper video-accent">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+          </div>
+          <div class="stat-value" id="statVideoAds">0</div>
+          <div class="stat-label">Видеореклама</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper banner-accent">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/>
+            </svg>
+          </div>
+          <div class="stat-value" id="statBanners">0</div>
+          <div class="stat-label">Баннеры и блоки</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper tracker-accent">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </div>
+          <div class="stat-value" id="statTrackers">0</div>
+          <div class="stat-label">Трекеры и SDK</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <button class="action-btn" id="reloadTabBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        <span>Обновить вкладку Rutube</span>
+      </button>
+
+      <div class="secondary-actions">
+        <button class="text-btn" id="openTestBtn">Открыть Rutube</button>
+        <span class="btn-divider">•</span>
+        <button class="text-btn" id="resetStatsBtn">Сбросить счетчик</button>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <span>Работает в Chrome / Brave</span>
+      <span class="version-tag">v1.0.0</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

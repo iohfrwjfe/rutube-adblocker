@@ -1,0 +1,52 @@
+#raichu-banner,
+#raichu_yasdk_container,
+[id^="adfox"],
+div[class*="rai_raichu-wrapper__advertWrapper"],
+span[class*="rai_raichu-advert-timers"],
+.raichu-player__ad-timer,
+.raichu-player__ad-ui,
+.raichu-player__ad-container,
+[class*="raichu-advert-overlay"],
+[class*="raichu-player__ad"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+}
+
+.wdp-recommended-ad-card-module__ad-banner-container,
+.additional-recommendations-module__grid-card:has([id^="adfox"]),
+.additional-recommendations-module__grid-card:has([class*="advert"]),
+aside[aria-label^="Реклама"],
+section[aria-label^="Реклама"],
+[aria-label="Реклама"],
+#communicationBanner,
+.footer-fixed-components-module__footerFixedPrior,
+.wdp-onboardings-inventory-banner-module__wrapper-section {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  visibility: hidden !important;
+}
+
+.app-download-default-banner-module__appDownloadPopupButtonWrap,
+.app-download-topbar-module__appDownloadTopBar,
+.push-notification-popup-module__wrapper,
+.notification-container-module__infoNotifications,
+.wdp-promo-modal-module__wdpPromoModalOverlay,
+.wdp-popup-overlay-module__overlay,
+div[class^="cookie-message-"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html, body {
+  overflow: auto !important;
+}

@@ -1,0 +1,9 @@
+# Chromium unpacked extension cache
+_metadata/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
