@@ -17,27 +17,24 @@
   }
 
   try {
-    const originalRemoveChild = Node.prototype.removeChild;
-    Node.prototype.removeChild = function (child) {
-      if (child && child.parentNode !== this) {
-        if (child.parentNode) {
-          return child.parentNode.removeChild(child);
-        }
-        return child;
-      }
-      return originalRemoveChild.call(this, child);
-    };
+    if (!window.Ya) {
+      const dummyFn = function () {
+        return {
+          reachGoal: () => {},
+          hit: () => {},
+          params: () => {},
+          userParams: () => {}
+        };
+      };
+      window.Ya = {
+        Metrika: dummyFn,
+        Metrika2: dummyFn,
+        adfox: { onStub: () => {}, create: () => {} },
+        Context: { AdvManager: { render: () => {}, getSlot: () => null } }
+      };
+    }
+    window.ym = window.ym || function () {};
 
-    const originalInsertBefore = Node.prototype.insertBefore;
-    Node.prototype.insertBefore = function (newNode, referenceNode) {
-      if (referenceNode && referenceNode.parentNode !== this) {
-        return this.appendChild(newNode);
-      }
-      return originalInsertBefore.call(this, newNode, referenceNode);
-    };
-  } catch (e) {}
-
-  try {
     Object.defineProperty(window, 'adBlockDetected', {
       get: () => false,
       set: () => {},
@@ -49,21 +46,6 @@
       configurable: false
     });
     window.__IS_ADBLOCK__ = false;
-
-    window.Ya = window.Ya || {};
-    window.Ya.Metrika2 = window.Ya.Metrika2 || function () {
-      return {
-        reachGoal: function () {},
-        params: function () {},
-        extLink: function () {},
-        file: function () {},
-        hit: function () {},
-        notBounce: function () {}
-      };
-    };
-    if (typeof window.ym === 'undefined') {
-      window.ym = function () {};
-    }
   } catch (e) {}
 
   function cleanPlayOptions(data) {
@@ -135,9 +117,7 @@
       url.includes('an.yandex.ru') ||
       url.includes('ads.adfox.ru') ||
       url.includes('betacdn.rutube.ru/adv') ||
-      url.includes('vigo.tech') ||
-      url.includes('weborama-tech.ru') ||
-      url.includes('/v2/banner/')
+      url.includes('weborama-tech.ru')
     );
   }
 
@@ -192,14 +172,7 @@
       );
     }
 
-    try {
-      return await originalFetch.apply(this, args);
-    } catch (err) {
-      return new Response(JSON.stringify({ status: 'ok' }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    return originalFetch.apply(this, args);
   };
 
   const originalXhrOpen = XMLHttpRequest.prototype.open;
