@@ -17,6 +17,27 @@
   }
 
   try {
+    const originalRemoveChild = Node.prototype.removeChild;
+    Node.prototype.removeChild = function (child) {
+      if (child && child.parentNode !== this) {
+        if (child.parentNode) {
+          return child.parentNode.removeChild(child);
+        }
+        return child;
+      }
+      return originalRemoveChild.call(this, child);
+    };
+
+    const originalInsertBefore = Node.prototype.insertBefore;
+    Node.prototype.insertBefore = function (newNode, referenceNode) {
+      if (referenceNode && referenceNode.parentNode !== this) {
+        return this.appendChild(newNode);
+      }
+      return originalInsertBefore.call(this, newNode, referenceNode);
+    };
+  } catch (e) {}
+
+  try {
     Object.defineProperty(window, 'adBlockDetected', {
       get: () => false,
       set: () => {},
@@ -114,7 +135,9 @@
       url.includes('an.yandex.ru') ||
       url.includes('ads.adfox.ru') ||
       url.includes('betacdn.rutube.ru/adv') ||
-      url.includes('vigo.tech')
+      url.includes('vigo.tech') ||
+      url.includes('weborama-tech.ru') ||
+      url.includes('/v2/banner/')
     );
   }
 
@@ -172,13 +195,10 @@
     try {
       return await originalFetch.apply(this, args);
     } catch (err) {
-      if (typeof url === 'string' && (url.includes('goya') || url.includes('stat') || url.includes('counter') || url.includes('yandex') || url.includes('vigo'))) {
-        return new Response(JSON.stringify({ status: 'ok' }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-      throw err;
+      return new Response(JSON.stringify({ status: 'ok' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
   };
 

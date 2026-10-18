@@ -41,7 +41,10 @@
       elements.forEach(el => {
         if (!el.dataset.adblockCleaned) {
           el.dataset.adblockCleaned = 'true';
-          el.remove();
+          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty('visibility', 'hidden', 'important');
+          el.style.setProperty('height', '0px', 'important');
+          el.style.setProperty('pointer-events', 'none', 'important');
           try {
             chrome.runtime.sendMessage({
               type: 'INCREMENT_STAT',
