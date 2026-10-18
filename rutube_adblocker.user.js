@@ -15,23 +15,30 @@
   'use strict';
 
   try {
-    if (!window.Ya) {
-      const dummyFn = function () {
-        return {
-          reachGoal: () => {},
-          hit: () => {},
-          params: () => {},
-          userParams: () => {}
-        };
-      };
-      window.Ya = {
-        Metrika: dummyFn,
-        Metrika2: dummyFn,
-        adfox: { onStub: () => {}, create: () => {} },
-        Context: { AdvManager: { render: () => {}, getSlot: () => null } }
-      };
-    }
-    window.ym = window.ym || function () {};
+    const dummyClient = {
+      reachGoal: () => {},
+      hit: () => {},
+      params: () => {},
+      userParams: () => {},
+      getClientID: (cb) => { if (typeof cb === 'function') cb('dummy-client-id'); return 'dummy-client-id'; },
+      getClientUserData: () => ({})
+    };
+    const dummyFn = function () {
+      return dummyClient;
+    };
+    dummyFn.getClientID = (cb) => { if (typeof cb === 'function') cb('dummy-client-id'); return 'dummy-client-id'; };
+
+    window.Ya = window.Ya || {};
+    window.Ya.Metrika = window.Ya.Metrika || dummyFn;
+    window.Ya.Metrika2 = window.Ya.Metrika2 || dummyFn;
+    window.Ya.adfox = window.Ya.adfox || { onStub: () => {}, create: () => {} };
+    window.Ya.Context = window.Ya.Context || { AdvManager: { render: () => {}, getSlot: () => null } };
+
+    window.ym = window.ym || function (id, action, ...args) {
+      if (action === 'getClientID' && typeof args[0] === 'function') {
+        args[0]('dummy-client-id');
+      }
+    };
 
     Object.defineProperty(window, 'adBlockDetected', {
       get: () => false,
@@ -52,27 +59,6 @@
     if (Array.isArray(data.advert) && data.advert.length > 0) {
       console.log(`[Rutube AdBlocker Userscript] Removed ${data.advert.length} ad item(s)`);
       data.advert = [];
-    } else if (!Array.isArray(data.advert)) {
-      data.advert = [];
-    }
-
-    if (Array.isArray(data.cuepoints) && data.cuepoints.length > 0) {
-      data.cuepoints = [];
-    }
-
-    if (data.yast) data.yast = null;
-    if (data.yast_live_online) data.yast_live_online = null;
-
-    if (data.meta && typeof data.meta === 'object') {
-      if (data.meta.advert_rule_id) data.meta.advert_rule_id = null;
-      if (data.meta.advert_limit_rule_id) data.meta.advert_limit_rule_id = null;
-    }
-
-    if (Array.isArray(data.stat)) {
-      data.stat = data.stat.filter(s => {
-        const name = (s && s.name) ? String(s.name).toLowerCase() : '';
-        return !name.includes('adstart') && !name.includes('adreceive') && !name.includes('ad_end') && !name.includes('adsend');
-      });
     }
 
     return data;
@@ -191,18 +177,7 @@
         break;
       }
     }
-
-    const adContainers = document.querySelectorAll('[class*="rai_raichu-wrapper__advertWrapper"], #raichu_yasdk_container, #raichu-banner');
-    if (adContainers.length > 0) {
-      document.querySelectorAll('video').forEach(v => {
-        if (!v.paused && v.duration > 0 && v.duration < 180) {
-          v.muted = true;
-          v.playbackRate = 16.0;
-          if (isFinite(v.duration)) v.currentTime = v.duration;
-        }
-      });
-    }
-  }, 250);
+  }, 500);
 
   const styleEl = document.createElement('style');
   styleEl.textContent = `
